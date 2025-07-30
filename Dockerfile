@@ -24,6 +24,6 @@ RUN apt-get install -y \
     netcat-traditional \
     dumb-init
 
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /usr/share/nginx

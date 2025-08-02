@@ -9,9 +9,16 @@ RUN apt-get update && apt-get install -y \
     xz-utils \
     --no-install-recommends
 
-RUN curl -fsSLO https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz \
-    && tar -xf node-v$NODE_VERSION-linux-x64.tar.xz -C /usr/local --strip-components=1 \
-    && rm node-v$NODE_VERSION-linux-x64.tar.xz
+RUN ARCH="$(uname -m)" && \
+    case "$ARCH" in \
+    x86_64) NODE_ARCH="x64";; \
+    aarch64) NODE_ARCH="arm64";; \
+    *) echo "Unsupported architecture: $ARCH"; exit 1;; \
+    esac && \
+    curl -fsSLO https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-$NODE_ARCH.tar.xz && \
+    tar -xf node-v$NODE_VERSION-linux-$NODE_ARCH.tar.xz -C /usr/local --strip-components=1 && \
+    rm node-v$NODE_VERSION-linux-$NODE_ARCH.tar.xz
+
 
 RUN apt-get install -y \
     chromium \
